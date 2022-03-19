@@ -15,15 +15,36 @@ class AppRouter {
     urlPathStrategy: UrlPathStrategy.path,
     routes: [
       GoRoute(
-        name: Routes.rootRoute,
+        name: rootRoute,
         path: '/',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const HomePage(),
-        ),
+        redirect: (state) =>
+            state.namedLocation(homeRoute, params: {'tab': 'search'}),
       ),
       GoRoute(
-        name: Routes.loginRoute,
+        name: homeRoute,
+        path: '/home/:tab(search|profile)',
+        pageBuilder: (context, state) {
+          final tab = state.params['tab']!;
+          return MaterialPage<void>(
+            key: state.pageKey,
+            child: HomePage(tab: tab),
+          );
+        },
+      ),
+      GoRoute(
+        name: searchRoute,
+        path: '/search',
+        redirect: (state) =>
+            state.namedLocation(homeRoute, params: {'tab': 'search'}),
+      ),
+      GoRoute(
+        name: profileRoute,
+        path: '/profile',
+        redirect: (state) =>
+            state.namedLocation(homeRoute, params: {'tab': 'profile'}),
+      ),
+      GoRoute(
+        name: loginRoute,
         path: '/login',
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
@@ -31,7 +52,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        name: Routes.createAccountRoute,
+        name: createAccountRoute,
         path: '/create-account',
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
