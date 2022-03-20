@@ -29,7 +29,7 @@ class SearchBloc extends Bloc<SearchBlocEvent,SearchBlocState> {
       String? errorText;
       if (e is DioError && e.response != null && e.response!.statusCode == 500) {
         errorText = serverErrorString;
-      } else if (e is SocketException) {
+      } else if (e is SocketException || e is DioError && e.error is SocketException) {
         errorText = connectionErrorString;
       }
       emit(SearchBlocErrorState(errorText));
