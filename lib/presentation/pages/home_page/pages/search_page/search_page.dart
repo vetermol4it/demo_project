@@ -17,6 +17,12 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   final SearchBloc _bloc = locator.get();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.close();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
