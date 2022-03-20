@@ -31,5 +31,5 @@ class User  extends Equatable {
   String get formattedDate => DateFormat('dd.MM.yyyy HH:mm').format(createdAt);
 
   @override
-  List<Object> get props => [login, password];
+  List<Object> get props => [login];
 }
