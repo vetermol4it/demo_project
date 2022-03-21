@@ -1,11 +1,13 @@
 import 'dart:async';
 
-import 'package:demo_project/main.dart';
+import 'package:logger/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:demo_project/domain/models/user/user.dart';
+import 'package:demo_project/main.dart';
+import 'package:demo_project/data/repository/auth_data_repository.dart';
 import 'package:demo_project/domain/repository/auth_repository.dart';
-import 'package:logger/logger.dart';
+import 'package:demo_project/domain/models/user/user.dart';
+import 'package:demo_project/presentation/constants/strings.dart';
 
 class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
   final AuthRepository _repository;
@@ -22,7 +24,12 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
       emit(AuthBlocAuthorizedState(user));
     } catch (e) {
       locator<Logger>().e('Error', e.toString());
-      emit(AuthBlocErrorState());//TODO: handle auth errors
+      String? error;
+      if (e is AuthError && e == AuthError.userNotExist) {
+        error = authErrorUserNotExistString;
+      }
+      emit(AuthBlocErrorState(error));
+
     }
   }
 

@@ -17,9 +17,10 @@ class AppRouter {
     refreshListenable: _authState,
     redirect: (state) {
       final rootLoc = state.namedLocation(rootRoute);
+      final registerLoc = state.namedLocation(createAccountRoute);
       final loginLoc = state.namedLocation(loginRoute);
       final loggedIn = _authState.loggedIn;
-      final loggingIn = state.subloc == loginLoc;
+      final loggingIn = state.subloc == loginLoc || state.subloc == registerLoc;
 
       if (loggedIn && loggingIn) return rootLoc;
       if (!loggedIn && !loggingIn) return loginLoc;
@@ -71,7 +72,7 @@ class AppRouter {
               child: const CreateAccountPage(),
             ),
           ),
-        ]
+        ],
       ),
     ],
   );
