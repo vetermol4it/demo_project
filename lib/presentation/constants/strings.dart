@@ -11,10 +11,13 @@ const String characterStatusString = 'Status';
 
 const String authErrorString = 'Oops, something went wrong....';
 const String authErrorUserNotExistString = 'Invalid login or password';
+const String authErrorUserExistString = 'User already registered';
 
+const String nameFieldHintText = 'Name';
 const String loginFieldHintText = 'Login';
 const String passwordFieldHintText = 'Password';
 
+const String nameFieldShortErrorString = 'Name required';
 const String loginFieldShortErrorString = 'Login is too short';
 const String passwordFieldShortErrorString = 'Password is too short';
 

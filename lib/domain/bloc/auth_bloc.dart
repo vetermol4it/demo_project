@@ -29,7 +29,6 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
         error = authErrorUserNotExistString;
       }
       emit(AuthBlocErrorState(error));
-
     }
   }
 
@@ -44,7 +43,11 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
       emit(AuthBlocAuthorizedState(event.user));
     } catch (e) {
       locator<Logger>().e('Error', e.toString());
-      emit(AuthBlocErrorState());//TODO: handle auth errors
+      String? error;
+      if (e is RegisterError && e == RegisterError.userExist) {
+        error = authErrorUserExistString;
+      }
+      emit(AuthBlocErrorState(error));
     }
   }
 }
