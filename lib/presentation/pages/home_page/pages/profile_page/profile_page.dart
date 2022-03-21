@@ -17,12 +17,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthBloc _bloc = locator.get();
 
   @override
-  void dispose() {
-    super.dispose();
-    _bloc.close();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder(
@@ -31,10 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (_, state) {
           if (state is AuthBlocAuthorizedState) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 40,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _InfoText(
                     title: userNameString,
@@ -43,6 +39,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   _InfoText(
                     title: userRegisterDateString,
                     info: state.user.formattedRegisterDate,
+                  ),
+                  const Spacer(),
+                  Align(
+                    alignment: Alignment.center,
+                    child: TextButton(
+                      onPressed: (){
+                        _bloc.add(AuthBlocSignOutEvent());
+                      },
+                      child: const Text(logoutButtonText),
+                    ),
                   ),
                 ],
               ),

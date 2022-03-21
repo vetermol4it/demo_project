@@ -26,3 +26,4 @@ const String passwordFieldShortErrorString = 'Password is too short';
 
 const String loginButtonText = 'Log In';
 const String registerButtonText = 'Register';
+const String logoutButtonText = 'Log Out';
