@@ -9,10 +9,22 @@ import 'package:demo_project/presentation/pages/login_page/login_page.dart';
 
 class AppRouter {
 
-  AppRouter();
+  final AuthNavigationState _authState;
+  AppRouter(this._authState);
 
-  final router = GoRouter(
+  late final router = GoRouter(
     urlPathStrategy: UrlPathStrategy.path,
+    refreshListenable: _authState,
+    redirect: (state) {
+      final rootLoc = state.namedLocation(rootRoute);
+      final loginLoc = state.namedLocation(loginRoute);
+      final loggedIn = _authState.loggedIn;
+      final loggingIn = state.subloc == loginLoc;
+
+      if (loggedIn && loggingIn) return rootLoc;
+      if (!loggedIn && !loggingIn) return loginLoc;
+      return null;
+    },
     routes: [
       GoRoute(
         name: rootRoute,
@@ -50,16 +62,28 @@ class AppRouter {
           key: state.pageKey,
           child: const LoginPage(),
         ),
-      ),
-      GoRoute(
-        name: createAccountRoute,
-        path: '/create-account',
-        pageBuilder: (context, state) => MaterialPage<void>(
-          key: state.pageKey,
-          child: const CreateAccountPage(),
-        ),
+        routes: [
+          GoRoute(
+            name: createAccountRoute,
+            path: 'create-account',
+            pageBuilder: (context, state) => MaterialPage<void>(
+              key: state.pageKey,
+              child: const CreateAccountPage(),
+            ),
+          ),
+        ]
       ),
     ],
   );
+}
 
+class AuthNavigationState extends ChangeNotifier {
+
+  bool _loggedIn = false;
+
+  bool get loggedIn => _loggedIn;
+  set loggedIn(bool value) {
+    _loggedIn = value;
+    notifyListeners();
+  }
 }

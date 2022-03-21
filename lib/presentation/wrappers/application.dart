@@ -1,3 +1,4 @@
+import 'package:demo_project/presentation/wrappers/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:demo_project/main.dart';
@@ -11,12 +12,14 @@ class Application extends StatelessWidget {
     return Builder(
       builder: (context) {
         final router = locator.get<AppRouter>().router;
-        return MaterialApp.router(
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blueGrey,
+        return AuthWrapper(
+          child: MaterialApp.router(
+            routeInformationParser: router.routeInformationParser,
+            routerDelegate: router.routerDelegate,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.blueGrey,
+            ),
           ),
         );
       }
