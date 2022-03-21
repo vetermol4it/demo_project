@@ -28,7 +28,7 @@ class User  extends Equatable {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  String get formattedDate => DateFormat('dd.MM.yyyy HH:mm').format(createdAt);
+  String get formattedRegisterDate => DateFormat('dd.MM.yyyy HH:mm').format(createdAt);
 
   @override
   List<Object> get props => [login];

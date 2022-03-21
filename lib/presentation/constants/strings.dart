@@ -9,6 +9,9 @@ const String characterSpeciesString = 'Species';
 const String characterGenderString = 'Gender';
 const String characterStatusString = 'Status';
 
+const String userNameString = 'Name';
+const String userRegisterDateString = 'Register date';
+
 const String authErrorString = 'Oops, something went wrong....';
 const String authErrorUserNotExistString = 'Invalid login or password';
 const String authErrorUserExistString = 'User already registered';
