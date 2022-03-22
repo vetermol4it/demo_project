@@ -5,6 +5,10 @@ import 'package:demo_project/domain/models/user/user.dart';
 class StorageUtil {
   Box? _usersBox;
 
+  StorageUtil(){
+    _init();
+  }
+
   Future<void> _init() async {
     if (_usersBox == null) {
       await Hive.initFlutter();

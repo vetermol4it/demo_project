@@ -23,7 +23,7 @@ void main() {
 }
 
 
-void _registerDependencies(){
+void _registerDependencies() async {
   ///Router
   locator.registerLazySingleton<AuthNavigationState>(
     () => AuthNavigationState()
@@ -31,26 +31,17 @@ void _registerDependencies(){
   locator.registerLazySingleton<AppRouter>(() => AppRouter(locator.get()));
 
   ///Logger
-  locator.registerLazySingleton<Logger>(() => Logger(
-    level: Level.debug,
-  ));
-
-  ///API
-  locator.registerLazySingleton<Dio>(() => Dio());
-  locator.registerLazySingleton<ApiUtil>(() => ApiUtil(locator.get()));
-
-  ///Storage
-  locator.registerLazySingleton<StorageUtil>(() => StorageUtil());
+  locator.registerLazySingleton<Logger>(() => Logger(level: Level.debug));
 
   ///Search
   locator.registerLazySingleton<SearchRepository>(
-    () => SearchDataRepository(locator.get()),
+    () => SearchDataRepository(ApiUtil(Dio())),
   );
   locator.registerFactory<SearchBloc>(() => SearchBloc(locator.get()));
 
   ///Authorization
   locator.registerLazySingleton<AuthRepository>(
-    () => AuthDataRepository(locator.get())
+    () => AuthDataRepository(StorageUtil())
   );
   locator.registerLazySingleton(() => AuthBloc(locator.get()));
 }
