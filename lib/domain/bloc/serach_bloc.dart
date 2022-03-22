@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:demo_project/data/utils/api_util/api_util.dart';
 import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:demo_project/domain/models/character/character.dart';
@@ -27,9 +26,9 @@ class SearchBloc extends Bloc<SearchBlocEvent,SearchBlocState> {
       locator<Logger>().e('Error', e.toString());
 
       String? errorText;
-      if (e is DioError && e.response != null && e.response!.statusCode == 500) {
+      if (e is ApiError && e == ApiError.serverError) {
         errorText = serverErrorString;
-      } else if (e is SocketException || e is DioError && e.error is SocketException) {
+      } else if (e is ApiError && e == ApiError.connectionError) {
         errorText = connectionErrorString;
       }
       emit(SearchBlocErrorState(errorText));
