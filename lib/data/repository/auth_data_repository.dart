@@ -10,10 +10,11 @@ class AuthDataRepository implements AuthRepository {
   @override
   Future<bool> register(User user) async {
     final registeredUsers = await _storageUtil.loadUsers();
-    if (registeredUsers.contains(user)){
+    if (registeredUsers.contains(user)) {
       throw RegisterError.userExist;
     }
     await _storageUtil.addUser(user);
+    await _storageUtil.saveLastAuthenticatedUser(user);
     return true;
   }
 
@@ -24,9 +25,21 @@ class AuthDataRepository implements AuthRepository {
       (element) => element.login == login && element.password == password,
       orElse: () => throw AuthError.userNotExist,
     );
+    await _storageUtil.saveLastAuthenticatedUser(user);
     return user;
   }
+
+  @override
+  Future<void> signOut() {
+    return _storageUtil.saveLastAuthenticatedUser(null);
+  }
+
+  @override
+  Future<User?> getLastAuthenticatedUser() {
+    return _storageUtil.loadLastAuthenticatedUser();
+  }
+
 }
 
-enum RegisterError{userExist, invalid}
-enum AuthError{userNotExist, invalid}
+enum RegisterError { userExist, invalid }
+enum AuthError { userNotExist, invalid }

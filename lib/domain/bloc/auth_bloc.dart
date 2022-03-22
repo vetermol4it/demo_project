@@ -15,6 +15,8 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
     on<AuthBlocSignInEvent>(_signInEventHandler);
     on<AuthBlocSignOutEvent>(_signOutEventHandler);
     on<AuthBlocRegisterEvent>(_registerEventHandler);
+    on<_AuthBlocInitialEvent>(_initialEventHandler);
+    add(_AuthBlocInitialEvent());
   }
 
   FutureOr<void> _signInEventHandler (AuthBlocSignInEvent event, emit) async {
@@ -33,7 +35,17 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
   }
 
   FutureOr<void> _signOutEventHandler (AuthBlocSignOutEvent event, emit) async {
+    _repository.signOut();
     emit(AuthBlocNotAuthorizedState());
+  }
+
+  FutureOr<void> _initialEventHandler (_AuthBlocInitialEvent event, emit) async {
+    final user = await _repository.getLastAuthenticatedUser();
+    if (user != null) {
+      emit(AuthBlocAuthorizedState(user));
+    } else {
+      emit(AuthBlocNotAuthorizedState());
+    }
   }
 
   FutureOr<void> _registerEventHandler (AuthBlocRegisterEvent event, emit) async {
@@ -53,6 +65,7 @@ class AuthBloc extends Bloc<AuthBlocEvent,AuthBlocState> {
 }
 
 abstract class AuthBlocEvent{}
+class _AuthBlocInitialEvent extends AuthBlocEvent{}
 class AuthBlocSignInEvent extends AuthBlocEvent{
   final String login;
   final String password;
