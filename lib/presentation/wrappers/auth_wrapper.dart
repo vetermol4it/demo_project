@@ -22,6 +22,12 @@ class _AuthWrapperState extends State<AuthWrapper> {
   final AuthNavigationState _navigationState = locator.get();
 
   @override
+  void dispose() {
+    super.dispose();
+    _bloc.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener(
       bloc: _bloc,
